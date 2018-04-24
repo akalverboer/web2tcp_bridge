@@ -1,8 +1,6 @@
 Web2Tcp: bridging Websockets and Tcp Sockets 
 ============================================
 
-<hr/>
-
 This application originated from my problem to make a browser client that acts as a GUI for a draughts engine. The draughts engine is a server process that uses the Tcp Socket protocol.
 But there is no simple way to create Tcp Sockets in Javascript on a browser side. Webpages uses the Websocket protocol to communicate with a server. 
 

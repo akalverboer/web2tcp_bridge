@@ -26,7 +26,8 @@ The internal operation of the bridge server is not very difficult. One thing is 
 <hr/>
 
 The application consists of two python files.
-You start the bridge server in a terminal with the command: **python web2tcp_bridge.py**
+You start the bridge server in a terminal with the command: <br/>
+**python web2tcp_bridge.py** <br/>
 After the prompt you give instructions to setup the bridge server. The main instructions are:
 - **connect** **<host>** **<port>**:
   Make a connection with the draughts engine with given host and port.

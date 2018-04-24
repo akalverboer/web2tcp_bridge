@@ -30,11 +30,11 @@ You start the bridge server in a terminal with the command: <br/>
 **python web2tcp_bridge.py** <br/>
 After the prompt you give instructions to setup the bridge server. The main instructions are:
 - **connect** **<host>** **<port>**:
-  Make a connection with the draughts engine with given host and port.
-  Defaults if host and port are omitted: localhost and 27531.
+  Make a connection with the draughts engine with given host and port.  <br/>
+  Defaults if host and port are omitted: localhost and 27531.  <br/>
   Of course, make sure the draughts engine is started.
 - **start** **<host>** **<port>**:
-  Start the websocket server with given host and port.
+  Start the websocket server with given host and port.  <br/>
   Defaults if host and port are omitted: localhost and 27532.
 
 Make sure the portnumbers of both parts of the bridge server are different.
@@ -65,7 +65,7 @@ Links
 If you like to setup a client-bridge-server environment, try the following applications.
 - [Github MobyDam Draughts engine](https://github.com/rhalbersma/mobydam)
 - [Github Draughts webclient]( xxx )
-- in the test folder: ws_client.html
+- use **test/ws_client.html**
 
 <hr/>
 

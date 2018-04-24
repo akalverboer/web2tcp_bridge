@@ -1,5 +1,5 @@
 Web2Tcp: bridging Websockets and Tcp Sockets 
-============================================
+--------------------------------------------
 
 This application originated from my problem to make a browser client that acts as a GUI for a draughts engine. The draughts engine is a server process that uses the Tcp Socket protocol.
 But there is no simple way to create Tcp Sockets in Javascript on a browser side. Webpages uses the Websocket protocol to communicate with a server. 
@@ -64,6 +64,7 @@ Links
 If you like to setup a client-bridge-server environment, try the following applications.
 - [Github MobyDam Draughts engine](https://github.com/rhalbersma/mobydam)
 - [Github Draughts webclient]( xxx )
+- in the test folder: ws_client.html
 
 <hr/>
 

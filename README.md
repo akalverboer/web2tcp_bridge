@@ -13,11 +13,12 @@ How does it work?
 ![bridge](images/bridge.png)
 
 The bridge server has two parts (see image).
-- The left part is a websocket server and communicates with the browser client.
-- The websocket server starts listening to browser clients who want to connect.
-- Once connected it receives and sends messages to the browser client.
-- The right part communicates with the draughts engine. It acts as a client which communicates with the draughts engine.
-- If the client is connected to the engine, it exchange messages with the engine. 
+- The left part is a websocket server and communicates with the browser client. <br/>
+  The websocket server starts listening to browser clients who want to connect. <br/>
+  Once connected it receives and sends messages to the browser client.
+- The right part communicates with the draughts engine. <br/>
+  It acts as a client which communicates with the draughts engine. <br/>
+  If the client is connected to the engine, it exchange messages with the engine. 
 
 The main function of the bridge server is to forward messages. Messages from the browser client are forwarded to the draughts engine. Messages from the draughts engine are forwarded to the browser client.
 

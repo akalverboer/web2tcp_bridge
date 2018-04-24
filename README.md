@@ -60,7 +60,7 @@ Again the bridge server is generally applicable (not only for a draughts engine)
 For future developments it would be better that more engines support the websocket protocol. Then engines can communicate directly with browser clients and therefore a bridge server is not needed.
 
 Links
-=====
+-----
 If you like to setup a client-bridge-server environment, try the following applications.
 - [Github MobyDam Draughts engine](https://github.com/rhalbersma/mobydam)
 - [Github Draughts webclient]( xxx )

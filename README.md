@@ -61,12 +61,16 @@ For an overview of instructions type **help** after the prompt. <br/>
 Again the bridge server is generally applicable (not only for a draughts engine). Use it for bridging Websockets and Tcp Sockets. <br/>
 For future developments it would be better that more engines support the websocket protocol. Then engines can communicate directly with browser clients and therefore a bridge server is not needed.
 
+If you like to setup a client-bridge-server test environment, try the following applications.
+Use **test/ws_client.html** for a websocket client.
+Use **test/tcpsocket_server.py** to start a tcp socket server.
+
 Links
 -----
-If you like to setup a client-bridge-server environment, try the following applications.
+Use these links to play draughts with a webclient against MobyDam.
 - [Github MobyDam Draughts engine](https://github.com/rhalbersma/mobydam)
 - [Github Draughts webclient]( xxx )
-- use **test/ws_client.html**
+
 
 <hr/>
 

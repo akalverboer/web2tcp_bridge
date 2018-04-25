@@ -80,7 +80,7 @@ Links
 -----
 Use these links to play draughts with a webclient against MobyDam.
 - [Github MobyDam Draughts engine](https://github.com/rhalbersma/mobydam)
-- [Github Draughts webclient]( xxx )
+- [Github Draughts webclient](https://github.com/akalverboer/wsdam_draughts_client)
 
 
 <hr/>

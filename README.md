@@ -1,13 +1,18 @@
 Web2Tcp: bridging Websockets and Tcp Sockets 
 --------------------------------------------
 
-This application originated from my problem to make a browser client that acts as a GUI for a draughts engine. The draughts engine is a server process that uses the Tcp Socket protocol.  <br/>
-But there is no simple way to create Tcp Sockets in Javascript on a browser side. Webpages uses the Websocket protocol to communicate with a server.   <br/>
+This application originated from my problem to make a browser client that acts as a GUI for a draughts engine.  <br/>
+The draughts engine is a server process that uses the Tcp Socket protocol.  <br/>
+But there is no simple way to create Tcp Sockets in Javascript on a browser side.  <br/>
+Webpages uses the Websocket protocol to communicate with a server.   <br/>
 
 ![connect](images/connect.png)
 
-My solution is an application called **Web2Tcp** that translates messages from the Websocket protocol to the Tcp Socket protocol and vice versa. I call it a **bridge server** because it acts as a bridge for messages between the Websocket and the Tcp Socket protocol.  <br/>
-Web2Tcp is a server process that runs from the commandline. Written in Python and tested on Linux. I expect it works also for Windows and Mac. It is generally applicable (not only for a draughts engine). <br/>
+My solution is an application called **Web2Tcp** that translates messages from the Websocket protocol  <br/>
+to the Tcp Socket protocol and vice versa.  <br/>
+I call it a **bridge server** because it acts as a bridge for messages between the Websocket and the Tcp Socket protocol.  <br/>
+Web2Tcp is a server process that runs from the commandline. Written in Python and tested on Linux.  <br/>
+I expect it works also for Windows and Mac. It is generally applicable (not only for a draughts engine). <br/>
 How does it work? 
 
 ![bridge](images/bridge.png)
@@ -20,9 +25,13 @@ The bridge server has two parts (see image).
   It acts as a client which communicates with the draughts engine. <br/>
   If the client is connected to the engine, it exchange messages with the engine. 
 
-The main function of the bridge server is to forward messages. Messages from the browser client are forwarded to the draughts engine. Messages from the draughts engine are forwarded to the browser client.  <br/>
+The main function of the bridge server is to forward messages.  <br/>
+Messages from the browser client are forwarded to the draughts engine.  <br/>
+Messages from the draughts engine are forwarded to the browser client.  <br/>
 
-The internal operation of the bridge server is not very difficult. One thing is important to mention. The Websocket protocol is a message based protocol. The Tcp Socket protocol is stream based. This means we have to define a delimiter for the end of a message. The delimiter we use is the Ascii null-character. 
+The internal operation of the bridge server is not very difficult. One thing is important to mention.  <br/>
+The Websocket protocol is a message based protocol. The Tcp Socket protocol is stream based.  <br/>
+This means we have to define a delimiter for the end of a message. The delimiter we use is the Ascii null-character. 
 
 <hr/>
 
@@ -58,11 +67,13 @@ For testing purposes two instructions are usefull:
 
 For an overview of instructions type **help** after the prompt. <br/>
 
-Again the bridge server is generally applicable (not only for a draughts engine). Use it for bridging Websockets and Tcp Sockets. <br/>
-For future developments it would be better that more engines support the websocket protocol. Then engines can communicate directly with browser clients and therefore a bridge server is not needed.
+Again the bridge server is generally applicable (not only for a draughts engine).  <br/>
+Use it for bridging Websockets and Tcp Sockets. <br/>
+For future developments it would be better that more engines support the websocket protocol.  <br/>
+Then engines can communicate directly with browser clients and therefore a bridge server is not needed.
 
-If you like to setup a client-bridge-server test environment, try the following applications.
-Use **test/ws_client.html** for a websocket client.
+If you like to setup a client-bridge-server test environment, try the following applications.  <br/>
+Use **test/ws_client.html** for a websocket client.  <br/>
 Use **test/tcpsocket_server.py** to start a tcp socket server.
 
 Links

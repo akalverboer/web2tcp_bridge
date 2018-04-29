@@ -33,7 +33,7 @@ import socket
 from web2tcp_websocketserver import WebsocketServer
 
 # === CONSTANTS ===
-VERSION = "2018.05.1"
+VERSION = "2018.04.29"  # initial release: version 2018.05.01
 APPNAME = {'short':'Web2Tcp', 'long':'Web2Tcp Bridge', 'github': 'web2tcp_bridge'}
 SYSLOG_FILE = 'web2tcp_xsys.log'
 MSGLOG_FILE = 'web2tcp_xmsg.log'
@@ -48,6 +48,7 @@ TCP_PORT = 27531       # default port connection tcp_client and tcp_server
 TERMINATOR = "\0"      # message terminator for tcp-connections (null character)
                        # websockets is message based protocol (no terminator needed)
                        # tcp-sockets is stream based protocol, terminator needed 
+MAX_MSG_LEN = 200      # Max length of received messages (char); msg will be truncated
 #===================================================================================
 
 def prompt() :
@@ -190,8 +191,11 @@ class MySocket:
    # def send(self)
 
    def receive(self):
-      # Receive messages from tcp-server
-      msg = ""
+      # Receive messages from tcp-socket server
+      # Chunks of the stream is concatenated until last char is the TERMINATOR
+      # The concatenated chunks contain multiple messages (but often just one)
+      # Returns list of received messages
+      recvdString = ""  # Received string
       while True:
          # Collect message chunks until null character found
          try:
@@ -203,17 +207,14 @@ class MySocket:
          if chunk == "":
             raise Exception("receive exception: socket tcp connection broken")
             return None
-         msg += chunk
-         if msg.find(TERMINATOR) > -1: break
-         if len(msg) > 128: break   # too long, no null char
+         recvdString += chunk
+         if recvdString.strip()[-1] == TERMINATOR: break   # stop if last char is TERM
 
-      #print("final msg: " + msg)
-      msg = msg.replace(TERMINATOR,"")   # remove all null chars
+      #print("final received string: " + recvdString)
 
-      # Use strip to remove all whitespace at the start and end.
-      # Including spaces, tabs, newlines and carriage returns.
-      msg = msg.strip()
-      return msg
+      recvdMessages = recvdString.split(TERMINATOR)
+      recvdMessages.pop()  # remove last item (is empty)
+      return recvdMessages
    # def receive(self)
 
 # *** END class MySocket ***
@@ -252,8 +253,8 @@ class WebsocketHandler(threading.Thread):
       # RECEIVE MESSAGE BY WS_SERVER FROM WS_CLIENT
       # Runs when bridge (ws-server) receives a message send by a ws-client
       # ** PRIVATE **
-      if len(iMessage) > 200:
-         iMessage = iMessage[:200]+'..'
+      if len(iMessage) > MAX_MSG_LEN:
+         iMessage = iMessage[:MAX_MSG_LEN]+'...'
       msg_info = "client(%d) ==> bridge:" % iClient['id']
       msg_info = msg_info.ljust(22)  + " " + iMessage 
       print("\n" + "Message from " + msg_info)
@@ -520,7 +521,7 @@ class ReceiveHandler(threading.Thread):
       self.isListening = False
 
    def run(self):
-      # Handling incoming messages from server.
+      # Handling incoming messages from socket server.
       # Excutes when thread started. Overriding python threading.Thread.run()
 
       syslog.info("ReceiveHandler started")
@@ -529,7 +530,7 @@ class ReceiveHandler(threading.Thread):
       syslog.info("Starts listening to TCP socket server" )
       while True:
          try:
-            message = mySock.receive()   # wait for message
+            recvdMessages = mySock.receive()   # wait for received messages
          except:
             err = sys.exc_info()[1]
             print( "Error %s" % err )
@@ -537,24 +538,30 @@ class ReceiveHandler(threading.Thread):
 
          # RECEIVE MESSAGE BY BRIDGE (TCP_CLIENT) FROM TCP_SERVER
          lock.acquire()   # LOCKLOCKLOCKLOCKLOCKLOCKLOCKLOCKLOCKLOCKLOCKLOCKLOCKLOCK
-         message = message[0:127]  # MSG max length
 
-         msg_info = "server ==> bridge:".ljust(22) + " " + message
-         print("\n" + "Message from " + msg_info)
-         msglog.info(msg_info)
+         for message in recvdMessages:
+            # Use strip to remove all whitespace at the start and end of a message.
+            # Including spaces, tabs, newlines and carriage returns.
+            message = message.strip()
+            if len(message) > MAX_MSG_LEN:
+               message = message[:MAX_MSG_LEN]+'...'   # truncate
 
-         # FORWARD MESSAGE FROM TCP_SERVER TO WS_CLIENT
-         if tWebsocketHandler.server == None:
-            print("Websocket server not started")
-         else:
-            try:
-               tWebsocketHandler.send_to_all(message)   # to all ws-clients
-               msg_info = "bridge ==> clients:".ljust(22) + " " + message
-               print("Message from " + msg_info)
-               msglog.info(msg_info)
-            except:
-               err = sys.exc_info()[1]
-               print( "Error forwarding message to ws-client: %s" % err )
+            msg_info = "server ==> bridge:".ljust(22) + " " + message
+            print("\n" + "Message from " + msg_info)
+            msglog.info(msg_info)
+
+            # FORWARD MESSAGE FROM TCP_SERVER TO WS_CLIENT
+            if tWebsocketHandler.server == None:
+               print("Error forwarding message: websocket server not started")
+            else:
+               try:
+                  tWebsocketHandler.send_to_all(message)   # to all ws-clients
+                  msg_info = "bridge ==> clients:".ljust(22) + " " + message
+                  print("Message from " + msg_info)
+                  msglog.info(msg_info)
+               except:
+                  err = sys.exc_info()[1]
+                  print( "Error forwarding message to ws-client: %s" % err )
 
          lock.release()   # LOCKLOCKLOCKLOCKLOCKLOCKLOCKLOCKLOCKLOCKLOCKLOCKLOCKLOCK
          prompt()
@@ -595,4 +602,3 @@ if __name__ == '__main__':
 
 
 #=====================================================================================
-

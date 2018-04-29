@@ -1,6 +1,7 @@
 Change log
 ----------
-2018-05-01: Initial release
+2018-05-01: Initial release <br/>
+
 2018-04-29:
 - Implementing fixed length of receiving messages from socket server or from webclient.
   Messages are truncated if too large. Max length defined by config parameter.
